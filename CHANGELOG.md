@@ -103,5 +103,5 @@ Internal alpha. Tools only. Not published to PyPI.
 - `build_mcp_server(app)` — programmatic FastMCP access
 - 67 tests
 
-[0.2.0]: https://github.com/muhammadarslan/bridgemcp/releases/tag/v0.2.0
-[0.1.0a1]: https://github.com/muhammadarslan/bridgemcp/releases/tag/v0.1.0-alpha
+[0.2.0]: https://github.com/Arsie-codes/bridgemcp/releases/tag/v0.2.0
+[0.1.0a1]: https://github.com/Arsie-codes/bridgemcp/releases/tag/v0.1.0-alpha

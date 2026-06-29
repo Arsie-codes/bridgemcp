@@ -5,7 +5,7 @@ Thank you for your interest in contributing.
 ## Development setup
 
 ```bash
-git clone https://github.com/muhammadarslan/bridgemcp.git
+git clone https://github.com/Arsie-codes/bridgemcp.git
 cd bridgemcp
 pip install -e '.[mcp,dev]'
 ```
@@ -46,7 +46,7 @@ black --check bridgemcp tests # check-only (what CI runs)
 
 ## Reporting bugs
 
-Open an issue at https://github.com/muhammadarslan/bridgemcp/issues and include:
+Open an issue at https://github.com/Arsie-codes/bridgemcp/issues and include:
 - Python version and OS
 - BridgeMCP version (`pip show bridgemcp`)
 - Minimal reproducer
