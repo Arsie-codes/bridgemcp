@@ -41,9 +41,9 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/muhammadarslan/bridgemcp"
-Repository = "https://github.com/muhammadarslan/bridgemcp"
-Issues = "https://github.com/muhammadarslan/bridgemcp/issues"
+Homepage = "https://github.com/Arsie-codes/bridgemcp"
+Repository = "https://github.com/Arsie-codes/bridgemcp"
+Issues = "https://github.com/Arsie-codes/bridgemcp/issues"
 
 [tool.hatch.build.targets.wheel]
 packages = ["bridgemcp"]

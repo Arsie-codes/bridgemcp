@@ -1,6 +1,6 @@
 # BridgeMCP
 
-[![CI](https://github.com/muhammadarslan/bridgemcp/actions/workflows/tests.yml/badge.svg)](https://github.com/muhammadarslan/bridgemcp/actions/workflows/tests.yml)
+[![CI](https://github.com/Arsie-codes/bridgemcp/actions/workflows/tests.yml/badge.svg)](https://github.com/Arsie-codes/bridgemcp/actions/workflows/tests.yml)
 [![PyPI](https://img.shields.io/pypi/v/bridgemcp)](https://pypi.org/project/bridgemcp/)
 [![Python](https://img.shields.io/pypi/pyversions/bridgemcp)](https://pypi.org/project/bridgemcp/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -215,7 +215,7 @@ Because the MCP SDK is an optional dependency, `BridgeMCP` and all invocation me
 
 ```bash
 # Clone and install in editable mode with all dev dependencies
-git clone https://github.com/muhammadarslan/bridgemcp.git
+git clone https://github.com/Arsie-codes/bridgemcp.git
 cd bridgemcp
 pip install -e '.[mcp,dev]'
 
