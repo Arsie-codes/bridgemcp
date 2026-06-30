@@ -39,6 +39,7 @@ from __future__ import annotations
 import asyncio
 import functools
 import logging
+import sys
 from collections.abc import Callable
 from typing import TYPE_CHECKING, Any
 
@@ -97,6 +98,8 @@ def _with_lifecycle(app: BridgeMCP, run_fn: Callable[[], None]) -> None:
         asyncio.run(_invoke_startup_hooks(app))
     try:
         run_fn()
+    except KeyboardInterrupt:
+        pass  # Clean shutdown — suppress traceback; finally runs shutdown hooks
     finally:
         if app._shutdown_hooks:  # type: ignore[reportPrivateUsage]
             asyncio.run(_invoke_shutdown_hooks(app))
@@ -112,8 +115,23 @@ def run_stdio(app: BridgeMCP) -> None:
     This is the standard transport for AI clients such as Claude Desktop
     and Cursor that launch the server as a subprocess.
 
+    When stdin is attached to a terminal (isatty), a human-readable startup
+    message is printed to stderr so developers know the server has started.
+    MCP clients never attach a TTY, so this message never appears in
+    production subprocess invocations.
+
     Requires: ``pip install 'bridgemcp[mcp]'``
     """
+    if sys.stdin.isatty():
+        print(
+            f"\n{app.name} {app.version}",
+            "Running as an MCP server on stdio transport.",
+            "This process is designed to be launched by an MCP client",
+            "(e.g. Claude Desktop, Cursor), not run directly in a terminal.",
+            "\nPress Ctrl+C to stop.",
+            sep="\n",
+            file=sys.stderr,
+        )
     server = build_mcp_server(app)
     _with_lifecycle(app, lambda: server.run(transport="stdio"))
 
@@ -128,8 +146,17 @@ def run_http(app: BridgeMCP, *, host: str, port: int) -> None:
     Use this when AI clients should connect over the network rather than
     via a subprocess.
 
+    A startup message is always printed to stderr so developers can confirm
+    the address and port before the underlying transport begins logging.
+
     Requires: ``pip install 'bridgemcp[mcp]'``
     """
+    print(
+        f"\n{app.name} {app.version}",
+        f"Starting MCP server on HTTP/SSE transport — http://{host}:{port}",
+        sep="\n",
+        file=sys.stderr,
+    )
     server = build_mcp_server(app, host=host, port=port)
     _with_lifecycle(app, lambda: server.run(transport="sse"))
 

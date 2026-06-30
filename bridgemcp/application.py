@@ -8,6 +8,7 @@ and use it to register tools, resources, and prompts.
 
 from __future__ import annotations
 
+import argparse
 import asyncio
 from collections.abc import Callable
 from typing import Any, overload
@@ -706,6 +707,66 @@ class BridgeMCP:
         from bridgemcp.adapters.mcp import run_http
 
         run_http(self, host=host, port=port)
+
+    def run_cli(self, args: list[str] | None = None) -> None:
+        """Start the MCP server from a CLI invocation.
+
+        Parses the argument list, handles ``--help``/``-h`` and
+        ``--version``/``-V``, validates transport flags, and delegates
+        to :meth:`run` or :meth:`run_http`.  Neither transport method is
+        modified by this call.
+
+        This method is intentionally thin: it owns CLI responsibilities
+        (argument parsing, help, version, validation) and nothing else.
+        All transport logic remains in ``run()`` and ``run_http()``.
+
+        Args:
+            args: Argument list to parse.  Defaults to ``sys.argv[1:]``
+                  when ``None``.  Pass an explicit list in tests to avoid
+                  depending on the real ``sys.argv``.
+
+        Example::
+
+            def main() -> None:
+                create_app().run_cli()
+        """
+        parser = argparse.ArgumentParser(
+            prog=self.name,
+            description=self.description or f"{self.name} MCP server",
+            formatter_class=argparse.RawDescriptionHelpFormatter,
+        )
+        parser.add_argument(
+            "-V",
+            "--version",
+            action="version",
+            version=f"{self.name} {self.version}",
+        )
+        parser.add_argument(
+            "--http",
+            action="store_true",
+            default=False,
+            help="Run using HTTP/SSE transport instead of stdio (default).",
+        )
+        parser.add_argument(
+            "--host",
+            default="127.0.0.1",
+            metavar="HOST",
+            help="Host to bind to for HTTP transport. Default: %(default)s",
+        )
+        parser.add_argument(
+            "--port",
+            type=int,
+            default=8000,
+            metavar="PORT",
+            help="Port to listen on for HTTP transport. Default: %(default)s",
+        )
+
+        parsed = parser.parse_args(args)
+
+        if parsed.http:
+            self.run_http(host=parsed.host, port=parsed.port)
+        else:
+            self.run()
 
     # ------------------------------------------------------------------
     # Representation

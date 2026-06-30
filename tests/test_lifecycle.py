@@ -397,3 +397,40 @@ async def test_startup_hooks_invoked_with_correct_app_reference():
     app._startup_hooks.append(capture_name)
     await _invoke_startup_hooks(app)
     assert received == ["my-server"]
+
+
+# ---------------------------------------------------------------------------
+# KeyboardInterrupt handling
+# ---------------------------------------------------------------------------
+
+
+def test_keyboard_interrupt_does_not_propagate() -> None:
+    """Ctrl+C from the server transport must not surface as a traceback."""
+    app = BridgeMCP(name="test")
+
+    def interrupt() -> None:
+        raise KeyboardInterrupt
+
+    _with_lifecycle(app, interrupt)  # must not raise
+
+
+def test_keyboard_interrupt_still_triggers_shutdown_hooks() -> None:
+    """Shutdown hooks must run even when the server is interrupted via Ctrl+C."""
+    app, log = _make_app_with_hooks(shutdown_tags=["A"])
+
+    def interrupt() -> None:
+        raise KeyboardInterrupt
+
+    _with_lifecycle(app, interrupt)
+    assert log == ["shutdown:A"]
+
+
+def test_non_keyboard_interrupt_still_propagates() -> None:
+    """Only KeyboardInterrupt is suppressed; other exceptions must propagate."""
+    app = BridgeMCP(name="test")
+
+    def crash() -> None:
+        raise RuntimeError("unexpected crash")
+
+    with pytest.raises(RuntimeError, match="unexpected crash"):
+        _with_lifecycle(app, crash)
