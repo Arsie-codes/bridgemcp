@@ -6,6 +6,61 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [0.2.1] — 2026-06-30
+
+### Fixed
+
+- **Default server version in repr** — `BridgeMCP("name")` now displays
+  `version='0.2.1'` instead of `version='0.1.0'`. The constructor's default
+  `version` parameter was never updated when the project graduated from the
+  alpha release.
+
+- **pyright strict mode was not enforced** — `pyproject.toml` contained
+  `strict = true` which pyright silently ignores (the correct key is
+  `typeCheckingMode = "strict"`). Strict mode is now active. All type
+  annotation gaps revealed by enabling it are resolved in this release.
+
+- **Type annotation fixes** (no behavioral changes):
+  - `adapters/mcp.py`: `# type: ignore[reportPrivateUsage]` on intentional
+    accesses to `_startup_hooks`, `_shutdown_hooks`, and `_mcp_server.version`;
+    prompt handler return typed as `list[dict[str, Any]]`
+  - `application.py`: `asyncio.run()` now receives a proper `Coroutine` via a
+    local `_run()` wrapper; isinstance runtime guards annotated
+  - `middleware.py`: `InvocationContext.metadata` factory replaced with a typed
+    helper to resolve `dict[Unknown, Unknown]` inference
+  - `prompts/normalize.py`: `cast(list[object], raw)` plus typed accumulator
+    let pyright verify the validation loop end-to-end
+  - `prompts/registry.py`: `args: list[PromptArgument] = []` annotation
+    resolves Unknown propagation into `tuple(args)`
+
+### Changed
+
+- **Single source of truth for the version string** — `bridgemcp/_version.py`
+  reads the version from installed package metadata (`importlib.metadata`) so
+  that `pyproject.toml` is the only file that needs to change on each release.
+  `bridgemcp.__version__` and the `BridgeMCP` constructor's default `version`
+  parameter both derive from this module automatically. Falls back to
+  `"__dev__"` when the package is not installed (e.g. bare `PYTHONPATH=.`
+  without `pip install -e .`).
+
+- **`BridgeMCP` default `version` parameter** is now the installed package
+  version rather than a hardcoded string literal.
+
+### Documentation
+
+- `CONTRIBUTING.md`: corrected `pip show bridgemcp` → `pip show bridgemcp-py`
+- `README.md`: corrected default version comment and constructor docstring
+- `tests/test_application.py`: default version assertion now compares against
+  `bridgemcp.__version__` so it never needs updating on a version bump
+
+### Notes
+
+- The 0.2.0 CHANGELOG entry referenced `bridgemcp[mcp,dev]` as the install
+  command. The correct install name for the published package is
+  `pip install 'bridgemcp-py[mcp,dev]'` (renamed before publication).
+
+---
+
 ## [0.2.0] — 2026-06-29
 
 First stable public release. The core architecture is frozen.
@@ -103,5 +158,6 @@ Internal alpha. Tools only. Not published to PyPI.
 - `build_mcp_server(app)` — programmatic FastMCP access
 - 67 tests
 
+[0.2.1]: https://github.com/Arsie-codes/bridgemcp/releases/tag/v0.2.1
 [0.2.0]: https://github.com/Arsie-codes/bridgemcp/releases/tag/v0.2.0
 [0.1.0a1]: https://github.com/Arsie-codes/bridgemcp/releases/tag/v0.1.0-alpha
