@@ -16,7 +16,7 @@ Registers three tools:
 
 ```bash
 # Install dependencies (first time only)
-pip install 'bridgemcp[mcp]'
+pip install 'bridge-mcp[mcp]'
 
 # stdio transport — for Claude Desktop, Cursor, VS Code
 python server.py

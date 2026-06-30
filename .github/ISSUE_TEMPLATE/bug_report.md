@@ -11,7 +11,7 @@ assignees: ''
 - **BridgeMCP version**: <!-- e.g. 0.2.0 — run `python -c "import bridgemcp; print(bridgemcp.__version__)"` -->
 - **Python version**: <!-- e.g. 3.12.3 -->
 - **OS**: <!-- e.g. Ubuntu 22.04, macOS 14, Windows 11 -->
-- **Installation**: <!-- e.g. `pip install bridgemcp[mcp]` or editable install -->
+- **Installation**: <!-- e.g. `pip install bridge-mcp[mcp]` or editable install -->
 
 ## What happened?
 

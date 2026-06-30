@@ -1,8 +1,8 @@
 # BridgeMCP
 
 [![CI](https://github.com/Arsie-codes/bridgemcp/actions/workflows/tests.yml/badge.svg)](https://github.com/Arsie-codes/bridgemcp/actions/workflows/tests.yml)
-[![PyPI](https://img.shields.io/pypi/v/bridgemcp)](https://pypi.org/project/bridgemcp/)
-[![Python](https://img.shields.io/pypi/pyversions/bridgemcp)](https://pypi.org/project/bridgemcp/)
+[![PyPI](https://img.shields.io/pypi/v/bridge-mcp)](https://pypi.org/project/bridge-mcp/)
+[![Python](https://img.shields.io/pypi/pyversions/bridge-mcp)](https://pypi.org/project/bridge-mcp/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 **A production-ready Python framework for building MCP servers.**
@@ -32,10 +32,10 @@ BridgeMCP wraps all of that behind a clean, decorator-based API:
 
 ```bash
 # With MCP transport support
-pip install 'bridgemcp[mcp]'
+pip install 'bridge-mcp[mcp]'
 
 # Core only (no transport — useful if you only need app.call() in tests)
-pip install bridgemcp
+pip install bridge-mcp
 ```
 
 Python 3.11+ required.
