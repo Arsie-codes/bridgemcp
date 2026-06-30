@@ -59,7 +59,7 @@ async def _invoke_startup_hooks(app: BridgeMCP) -> None:
     Raises the first exception encountered, aborting subsequent hooks.
     The server will not start if this coroutine raises.
     """
-    for hook in app._startup_hooks:
+    for hook in app._startup_hooks:  # type: ignore[reportPrivateUsage]
         await hook(app)
 
 
@@ -69,7 +69,7 @@ async def _invoke_shutdown_hooks(app: BridgeMCP) -> None:
     Each hook is individually guarded.  An exception is logged at ERROR
     level but does not prevent the remaining hooks from running.
     """
-    for hook in reversed(app._shutdown_hooks):
+    for hook in reversed(app._shutdown_hooks):  # type: ignore[reportPrivateUsage]
         try:
             await hook(app)
         except Exception:
@@ -93,12 +93,12 @@ def _with_lifecycle(app: BridgeMCP, run_fn: Callable[[], None]) -> None:
         run_fn: Zero-argument callable that starts the server transport.
             Typically ``lambda: server.run(transport=...)``.
     """
-    if app._startup_hooks:
+    if app._startup_hooks:  # type: ignore[reportPrivateUsage]
         asyncio.run(_invoke_startup_hooks(app))
     try:
         run_fn()
     finally:
-        if app._shutdown_hooks:
+        if app._shutdown_hooks:  # type: ignore[reportPrivateUsage]
             asyncio.run(_invoke_shutdown_hooks(app))
 
 
@@ -180,7 +180,7 @@ def build_mcp_server(
     # declared version string.  When FastMCP adds a public API for this (e.g.
     # a `version=` parameter on FastMCP()), pass app.version there and remove
     # this line.
-    server._mcp_server.version = app.version
+    server._mcp_server.version = app.version  # type: ignore[reportPrivateUsage]
 
     _register_tools(server, app)
     _register_resources(server, app)
@@ -291,7 +291,7 @@ def _register_prompt(server: Any, app: Any, prompt: Prompt) -> None:
     original_fn = prompt.fn
 
     @functools.wraps(original_fn)
-    async def handler(**kwargs: Any) -> list[dict]:
+    async def handler(**kwargs: Any) -> list[dict[str, Any]]:
         messages = await app.arender_prompt(prompt_name, **kwargs)
         return [
             {"role": msg.role, "content": {"type": "text", "text": msg.content}}

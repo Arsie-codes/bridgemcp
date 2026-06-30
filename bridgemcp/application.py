@@ -12,6 +12,7 @@ import asyncio
 from collections.abc import Callable
 from typing import Any, overload
 
+from bridgemcp._version import __version__ as _framework_version
 from bridgemcp.config import BridgeConfig
 from bridgemcp.exceptions import (
     PromptExecutionError,
@@ -51,7 +52,7 @@ class BridgeMCP:
     def __init__(
         self,
         name: str,
-        version: str = "0.1.0",
+        version: str = _framework_version,
         description: str | None = None,
         config: BridgeConfig | None = None,
     ) -> None:
@@ -61,17 +62,18 @@ class BridgeMCP:
         Args:
             name: The name of your MCP server. Shown to AI clients
                   during the connection handshake.
-            version: The version of your MCP server. Defaults to "0.1.0".
+            version: The version of your MCP server. Defaults to the
+                     installed ``bridgemcp-py`` package version.
             description: An optional description of what your server does.
             config: An optional BridgeConfig instance. If not provided,
                     default configuration is used.
         """
-        if not isinstance(name, str) or not name.strip():
+        if not isinstance(name, str) or not name.strip():  # type: ignore[reportUnnecessaryIsInstance]
             raise ValueError(
                 "BridgeMCP requires a non-empty string for 'name'. " f"Got: {name!r}"
             )
 
-        if not isinstance(version, str) or not version.strip():
+        if not isinstance(version, str) or not version.strip():  # type: ignore[reportUnnecessaryIsInstance]
             raise ValueError(
                 "BridgeMCP requires a non-empty string for 'version'. "
                 f"Got: {version!r}"
@@ -668,7 +670,10 @@ class BridgeMCP:
         async def terminus(ctx: InvocationContext) -> Any:
             return direct(ctx)
 
-        return asyncio.run(build_chain(self._middleware, terminus)(ctx))
+        async def _run() -> Any:
+            return await build_chain(self._middleware, terminus)(ctx)
+
+        return asyncio.run(_run())
 
     # ------------------------------------------------------------------
     # Transport

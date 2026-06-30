@@ -48,6 +48,6 @@ black --check bridgemcp tests # check-only (what CI runs)
 
 Open an issue at https://github.com/Arsie-codes/bridgemcp/issues and include:
 - Python version and OS
-- BridgeMCP version (`pip show bridgemcp`)
+- BridgeMCP version (`pip show bridgemcp-py`)
 - Minimal reproducer
 - Expected vs actual behaviour

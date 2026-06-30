@@ -29,6 +29,10 @@ from dataclasses import dataclass, field
 from typing import Any, Literal
 
 
+def _metadata_factory() -> dict[str, Any]:
+    return {}
+
+
 @dataclass
 class InvocationContext:
     """Context passed through the middleware chain on every handler invocation.
@@ -47,7 +51,7 @@ class InvocationContext:
     primitive: Literal["tool", "resource", "prompt"]
     name: str
     kwargs: dict[str, Any]
-    metadata: dict[str, Any] = field(default_factory=dict)
+    metadata: dict[str, Any] = field(default_factory=_metadata_factory)
 
 
 #: Type alias for the ``next`` callable passed to each middleware.

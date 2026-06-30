@@ -7,6 +7,7 @@ and the developer-facing string representations.
 
 import pytest
 
+import bridgemcp
 from bridgemcp import BridgeMCP
 
 # ---------------------------------------------------------------------------
@@ -19,7 +20,7 @@ def test_minimal_construction():
     app = BridgeMCP(name="my-app")
 
     assert app.name == "my-app"
-    assert app.version == "0.1.0"
+    assert app.version == bridgemcp.__version__
     assert app.description is None
 
 

@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "bridgemcp-py"
-version = "0.2.0"
+version = "0.2.1"
 description = "A Python framework for building MCP servers"
 readme = "README.md"
 license = { text = "MIT" }
@@ -66,4 +66,4 @@ testpaths = ["tests"]
 
 [tool.pyright]
 pythonVersion = "3.11"
-strict = true
+typeCheckingMode = "strict"

@@ -97,7 +97,7 @@ from bridgemcp.config import BridgeConfig
 
 app = BridgeMCP(
     name="my-app",          # shown to AI clients during the MCP handshake
-    version="1.0.0",        # defaults to "0.1.0"
+    version="1.0.0",        # defaults to the installed package version
     description="...",      # optional — shown as server instructions
     config=BridgeConfig(),
 )

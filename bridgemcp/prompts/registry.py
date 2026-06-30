@@ -111,7 +111,7 @@ def _extract_arguments(fn: Callable[..., Any]) -> tuple[PromptArgument, ...]:
         # Fallback for lambdas, built-ins, or functions with unresolvable annotations.
         hints = {}
 
-    args = []
+    args: list[PromptArgument] = []
     for param_name, param in sig.parameters.items():
         annotation = hints.get(param_name)  # None when unannotated or unresolvable
         required = param.default is inspect.Parameter.empty

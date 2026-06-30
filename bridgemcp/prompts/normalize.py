@@ -12,7 +12,7 @@ handler is always a developer mistake, not a valid edge case.
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, cast
 
 from bridgemcp.prompts.registry import PromptMessage
 
@@ -47,13 +47,16 @@ def normalize_messages(raw: Any) -> list[PromptMessage]:
         return [raw]
 
     if isinstance(raw, list):
-        for i, item in enumerate(raw):
+        raw_list = cast(list[object], raw)
+        messages: list[PromptMessage] = []
+        for i, item in enumerate(raw_list):
             if not isinstance(item, PromptMessage):
                 raise TypeError(
                     f"Expected list[PromptMessage] but element {i} is "
                     f"{type(item).__name__!r}: {item!r}"
                 )
-        return list(raw)
+            messages.append(item)
+        return messages
 
     raise TypeError(
         f"Cannot normalize {type(raw).__name__!r} to list[PromptMessage]. "
